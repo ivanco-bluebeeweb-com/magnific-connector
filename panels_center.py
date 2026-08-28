@@ -22,6 +22,16 @@ ASPECT_RATIO_OPTIONS = [
 ]
 
 
+def _field(label: str, node: ui.UINode) -> ui.UINode:
+    """A labeled input: a caption Text above the raw component -- ui.Input/
+    ui.Select/ui.Textarea don't accept a `label` kwarg themselves, per the
+    confirmed pattern used across every other connector's panels.py."""
+    return ui.Stack(direction="v", gap=1, align="stretch", children=[
+        ui.Text(label, variant="caption"),
+        node,
+    ])
+
+
 def _image_screen() -> ui.UINode:
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Text("Сгенерировать изображение", variant="subtitle"),
@@ -29,12 +39,13 @@ def _image_screen() -> ui.UINode:
             action="generate_image", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Select(param_name="model", label="Модель", options=IMAGE_MODEL_OPTIONS,
-                              placeholder="Выберите модель генерации"),
-                    ui.Textarea(param_name="prompt", label="Промпт",
-                                placeholder="Продуктовое фото керамической кружки на деревянном столе, мягкий дневной свет"),
-                    ui.Select(param_name="aspect_ratio", label="Соотношение сторон",
-                              options=ASPECT_RATIO_OPTIONS, placeholder="Выберите соотношение сторон"),
+                    _field("Модель", ui.Select(param_name="model", options=IMAGE_MODEL_OPTIONS,
+                                                placeholder="Выберите модель генерации")),
+                    _field("Промпт", ui.Textarea(param_name="prompt",
+                                                  placeholder="Продуктовое фото керамической кружки на деревянном столе, мягкий дневной свет")),
+                    _field("Соотношение сторон", ui.Select(param_name="aspect_ratio",
+                                                            options=ASPECT_RATIO_OPTIONS,
+                                                            placeholder="Выберите соотношение сторон")),
                 ]),
             ],
         ),
@@ -48,12 +59,12 @@ def _video_screen() -> ui.UINode:
             action="generate_video", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Select(param_name="model", label="Модель", options=VIDEO_MODEL_OPTIONS,
-                              placeholder="Выберите модель видео"),
-                    ui.Textarea(param_name="prompt", label="Описание сцены",
-                                placeholder="Камера медленно приближается к чашке кофе на столе у окна, пар поднимается вверх"),
-                    ui.Input(param_name="image_url", label="Референс-изображение (необязательно)",
-                             placeholder="https://example.com/reference.jpg"),
+                    _field("Модель", ui.Select(param_name="model", options=VIDEO_MODEL_OPTIONS,
+                                                placeholder="Выберите модель видео")),
+                    _field("Описание сцены", ui.Textarea(param_name="prompt",
+                                                          placeholder="Камера медленно приближается к чашке кофе на столе у окна, пар поднимается вверх")),
+                    _field("Референс-изображение (необязательно)", ui.Input(param_name="image_url",
+                                                                             placeholder="https://example.com/reference.jpg")),
                 ]),
             ],
         ),
@@ -68,12 +79,14 @@ def _edit_screen() -> ui.UINode:
             action="upscale_image", submit_label="Апскейлить (Creative)",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Input(param_name="image_url", label="URL изображения",
-                             placeholder="https://example.com/photo.jpg"),
-                    ui.Select(param_name="scale_factor", label="Множитель увеличения",
-                              options=[{"value": "2x", "label": "2x"}, {"value": "4x", "label": "4x"},
-                                       {"value": "8x", "label": "8x"}, {"value": "16x", "label": "16x"}],
-                              placeholder="Выберите множитель"),
+                    _field("URL изображения", ui.Input(param_name="image_url",
+                                                        placeholder="https://example.com/photo.jpg")),
+                    _field("Множитель увеличения", ui.Select(
+                        param_name="scale_factor",
+                        options=[{"value": "2x", "label": "2x"}, {"value": "4x", "label": "4x"},
+                                 {"value": "8x", "label": "8x"}, {"value": "16x", "label": "16x"}],
+                        placeholder="Выберите множитель",
+                    )),
                 ]),
             ],
         ),
@@ -87,10 +100,10 @@ def _audio_screen() -> ui.UINode:
             action="generate_music", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Textarea(param_name="prompt", label="Описание трека",
-                                placeholder="Спокойный лоу-фай бит для видео о кофейне, 90 BPM"),
-                    ui.Input(param_name="duration_seconds", label="Длительность (сек)",
-                             placeholder="30"),
+                    _field("Описание трека", ui.Textarea(param_name="prompt",
+                                                          placeholder="Спокойный лоу-фай бит для видео о кофейне, 90 BPM")),
+                    _field("Длительность (сек)", ui.Input(param_name="duration_seconds",
+                                                           placeholder="30")),
                 ]),
             ],
         ),
@@ -104,13 +117,15 @@ def _stock_screen() -> ui.UINode:
             action="search_stock_content", submit_label="Искать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Input(param_name="query", label="Поисковый запрос",
-                             placeholder="кофейная чашка на столе"),
-                    ui.Select(param_name="content_type", label="Тип контента",
-                              options=[{"value": "images", "label": "Изображения"},
-                                       {"value": "icons", "label": "Иконки"},
-                                       {"value": "videos", "label": "Видео"}],
-                              placeholder="Выберите тип контента"),
+                    _field("Поисковый запрос", ui.Input(param_name="query",
+                                                        placeholder="кофейная чашка на столе")),
+                    _field("Тип контента", ui.Select(
+                        param_name="content_type",
+                        options=[{"value": "images", "label": "Изображения"},
+                                 {"value": "icons", "label": "Иконки"},
+                                 {"value": "videos", "label": "Видео"}],
+                        placeholder="Выберите тип контента",
+                    )),
                 ]),
             ],
         ),

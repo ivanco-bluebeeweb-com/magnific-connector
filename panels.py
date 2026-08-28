@@ -29,6 +29,16 @@ from app import ext
 from accounts import _get_key
 
 
+def _field(label: str, node: ui.UINode) -> ui.UINode:
+    """A labeled input: a caption Text above the raw component -- ui.Input/
+    ui.Select/ui.Textarea don't accept a `label` kwarg themselves, per the
+    confirmed pattern used across every other connector's panels.py."""
+    return ui.Stack(direction="v", gap=1, align="stretch", children=[
+        ui.Text(label, variant="caption"),
+        node,
+    ])
+
+
 def _settings_button() -> ui.UINode:
     return ui.Button("App settings", variant="secondary", size="sm", full_width=True,
                       on_click=ui.Call("__panel__magnific_settings"))
@@ -46,11 +56,11 @@ def _connect_form() -> ui.UINode:
             submit_label="Verify and connect",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
-                    ui.Input(
-                        param_name="api_key", label="API-ключ Magnific",
+                    _field("API key", ui.Input(
+                        param_name="api_key",
                         placeholder="mgn_live_••••••••••••••••",
                         input_type="password",
-                    ),
+                    )),
                 ]),
             ],
         ),
