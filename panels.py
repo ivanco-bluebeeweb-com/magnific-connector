@@ -44,7 +44,6 @@ def _connect_form() -> ui.UINode:
         ui.Form(
             action="connect_magnific",
             submit_label="Verify and connect",
-            full_width=True,
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Input(

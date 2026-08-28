@@ -26,7 +26,7 @@ def _image_screen() -> ui.UINode:
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Text("Сгенерировать изображение", variant="subtitle"),
         ui.Form(
-            action="generate_image", submit_label="Сгенерировать", full_width=True,
+            action="generate_image", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Select(param_name="model", label="Модель", options=IMAGE_MODEL_OPTIONS,
@@ -45,7 +45,7 @@ def _video_screen() -> ui.UINode:
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Text("Сгенерировать видео", variant="subtitle"),
         ui.Form(
-            action="generate_video", submit_label="Сгенерировать", full_width=True,
+            action="generate_video", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Select(param_name="model", label="Модель", options=VIDEO_MODEL_OPTIONS,
@@ -65,7 +65,7 @@ def _edit_screen() -> ui.UINode:
         ui.Text("Редактировать изображение", variant="subtitle"),
         ui.Text("Апскейл, релайт, перенос стиля, удаление фона, расширение холста.", variant="caption"),
         ui.Form(
-            action="upscale_image", submit_label="Апскейлить (Creative)", full_width=True,
+            action="upscale_image", submit_label="Апскейлить (Creative)",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Input(param_name="image_url", label="URL изображения",
@@ -84,7 +84,7 @@ def _audio_screen() -> ui.UINode:
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Text("Сгенерировать музыку", variant="subtitle"),
         ui.Form(
-            action="generate_music", submit_label="Сгенерировать", full_width=True,
+            action="generate_music", submit_label="Сгенерировать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Textarea(param_name="prompt", label="Описание трека",
@@ -101,7 +101,7 @@ def _stock_screen() -> ui.UINode:
     return ui.Stack(direction="v", gap=3, align="stretch", children=[
         ui.Text("Поиск стокового контента", variant="subtitle"),
         ui.Form(
-            action="search_stock_content", submit_label="Искать", full_width=True,
+            action="search_stock_content", submit_label="Искать",
             children=[
                 ui.Stack(direction="v", gap=2, align="stretch", children=[
                     ui.Input(param_name="query", label="Поисковый запрос",
