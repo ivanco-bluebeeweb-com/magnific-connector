@@ -59,7 +59,6 @@ def _connect_form() -> ui.UINode:
                     _field("API key", ui.Input(
                         param_name="api_key",
                         placeholder="mgn_live_••••••••••••••••",
-                        input_type="password",
                     )),
                 ]),
             ],
