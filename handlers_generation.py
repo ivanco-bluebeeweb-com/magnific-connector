@@ -74,9 +74,9 @@ async def generate_image(ctx, params: GenerateImageParams) -> ActionResult:
         return ActionResult.error(f"Magnific rejected the image generation request: {exc.detail}")
 
     await _record_history(ctx, kind="image", model=spec.id, task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(ImageTaskRef(
+    return ActionResult.success(ImageTaskRef(
         id=task_id, title=f"{spec.title} image task", model=spec.id, status="pending",
-    ))
+    ), summary="Generate image done.")
 
 
 @chat.function(
@@ -101,10 +101,10 @@ async def get_image_task(ctx, params: GetImageTaskParams) -> ActionResult:
 
     if result["state"] == "done":
         await _record_history(ctx, kind="image", model=spec.id, task_id=params.task_id, prompt="", status="done", result_urls=result["urls"])
-    return ActionResult.ok(ImageTaskRef(
+    return ActionResult.success(ImageTaskRef(
         id=params.task_id, title=f"{spec.title} image task", model=spec.id,
         status=result["state"], image_urls=result["urls"],
-    ))
+    ), summary="Image task retrieved.")
 
 
 @chat.function(
@@ -141,9 +141,9 @@ async def generate_video(ctx, params: GenerateVideoParams) -> ActionResult:
         return ActionResult.error(f"Magnific rejected the video generation request: {exc.detail}")
 
     await _record_history(ctx, kind="video", model=spec.id, task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(VideoTaskRef(
+    return ActionResult.success(VideoTaskRef(
         id=task_id, title=f"{spec.title} video task", model=spec.id, status="pending",
-    ))
+    ), summary="Generate video done.")
 
 
 @chat.function(
@@ -168,7 +168,7 @@ async def get_video_task(ctx, params: GetVideoTaskParams) -> ActionResult:
 
     if result["state"] == "done":
         await _record_history(ctx, kind="video", model=spec.id, task_id=params.task_id, prompt="", status="done", result_urls=result["urls"])
-    return ActionResult.ok(VideoTaskRef(
+    return ActionResult.success(VideoTaskRef(
         id=params.task_id, title=f"{spec.title} video task", model=spec.id,
         status=result["state"], video_urls=result["urls"],
-    ))
+    ), summary="Video task retrieved.")

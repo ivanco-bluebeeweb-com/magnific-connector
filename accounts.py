@@ -44,10 +44,10 @@ async def connect_magnific(ctx, params: ConnectMagnificParams) -> ActionResult:
         return ActionResult.error(f"Could not reach Magnific to verify the key: {exc}")
 
     await ctx.secrets.set(_SECRET_NAME, key)
-    return ActionResult.ok(ProviderConnection(
+    return ActionResult.success(ProviderConnection(
         id="magnific", title="Magnific", connected=True,
         detail="Connected -- API key verified.",
-    ))
+    ), summary="Magnific connected.")
 
 
 @chat.function(
@@ -57,10 +57,10 @@ async def connect_magnific(ctx, params: ConnectMagnificParams) -> ActionResult:
 async def disconnect_magnific(ctx, params: NoParams) -> ActionResult:
     """Delete the saved API key. Existing local generation history stays."""
     await ctx.secrets.delete(_SECRET_NAME)
-    return ActionResult.ok(ProviderConnection(
+    return ActionResult.success(ProviderConnection(
         id="magnific", title="Magnific", connected=False,
         detail="Disconnected -- API key removed.",
-    ))
+    ), summary="Magnific disconnected.")
 
 
 @chat.function(
@@ -71,13 +71,13 @@ async def get_magnific_connection(ctx, params: NoParams) -> ActionResult:
     """Report whether an API key is currently saved for this user."""
     key = await _get_key(ctx)
     if not key:
-        return ActionResult.ok(ProviderConnection(
+        return ActionResult.success(ProviderConnection(
             id="magnific", title="Magnific", connected=False,
             detail="Not connected -- call connect_magnific with your API key.",
-        ))
-    return ActionResult.ok(ProviderConnection(
+        ), summary="Magnific connection retrieved.")
+    return ActionResult.success(ProviderConnection(
         id="magnific", title="Magnific", connected=True, detail="Connected.",
-    ))
+    ), summary="Magnific connection retrieved.")
 
 
 @chat.function(
@@ -98,10 +98,10 @@ async def get_account_balance(ctx, params: NoParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Could not read Magnific credit usage: {exc.detail}")
 
-    return ActionResult.ok(CreditBalance(
+    return ActionResult.success(CreditBalance(
         id="magnific-balance", title="Magnific credit usage",
         credits_used=float(data.get("credits_used", data.get("total_credits_used", 0)) or 0),
         period_start=str(data.get("period_start", "")),
         period_end=str(data.get("period_end", "")),
         detail="Credit usage for the current billing period.",
-    ))
+    ), summary="Account balance retrieved.")

@@ -68,7 +68,7 @@ async def upscale_image(ctx, params: UpscaleImageParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the upscale request: {exc.detail}")
     await _record_history(ctx, model=kind, task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(EditTaskRef(id=task_id, title="Upscale task", kind=kind, status="pending"))
+    return ActionResult.success(EditTaskRef(id=task_id, title="Upscale task", kind=kind, status="pending"), summary="Upscale image done.")
 
 
 @chat.function(
@@ -87,7 +87,7 @@ async def relight_image(ctx, params: RelightImageParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the relight request: {exc.detail}")
     await _record_history(ctx, model="relight", task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(EditTaskRef(id=task_id, title="Relight task", kind="relight", status="pending"))
+    return ActionResult.success(EditTaskRef(id=task_id, title="Relight task", kind="relight", status="pending"), summary="Relight image done.")
 
 
 @chat.function(
@@ -106,7 +106,7 @@ async def style_transfer_image(ctx, params: StyleTransferParams) -> ActionResult
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the style transfer request: {exc.detail}")
     await _record_history(ctx, model="style_transfer", task_id=task_id, prompt="", status="pending")
-    return ActionResult.ok(EditTaskRef(id=task_id, title="Style transfer task", kind="style_transfer", status="pending"))
+    return ActionResult.success(EditTaskRef(id=task_id, title="Style transfer task", kind="style_transfer", status="pending"), summary="Style transfer image done.")
 
 
 @chat.function(
@@ -121,7 +121,7 @@ async def remove_background(ctx, params: RemoveBackgroundParams) -> ActionResult
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the background removal request: {exc.detail}")
     await _record_history(ctx, model="remove_background", task_id=task_id, prompt="", status="pending")
-    return ActionResult.ok(EditTaskRef(id=task_id, title="Remove background task", kind="remove_background", status="pending"))
+    return ActionResult.success(EditTaskRef(id=task_id, title="Remove background task", kind="remove_background", status="pending"), summary="Background deleted.")
 
 
 @chat.function(
@@ -142,7 +142,7 @@ async def expand_image(ctx, params: ExpandImageParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the expand request: {exc.detail}")
     await _record_history(ctx, model="expand", task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(EditTaskRef(id=task_id, title="Expand task", kind="expand", status="pending"))
+    return ActionResult.success(EditTaskRef(id=task_id, title="Expand task", kind="expand", status="pending"), summary="Expand image done.")
 
 
 @chat.function(
@@ -163,7 +163,7 @@ async def get_edit_task(ctx, params: GetEditTaskParams) -> ActionResult:
         return ActionResult.error(f"Could not read task status: {exc.detail}")
     if result["state"] == "done":
         await _record_history(ctx, model=params.kind, task_id=params.task_id, prompt="", status="done", result_urls=result["urls"])
-    return ActionResult.ok(EditTaskRef(
+    return ActionResult.success(EditTaskRef(
         id=params.task_id, title=f"{params.kind} task", kind=params.kind,
         status=result["state"], result_urls=result["urls"],
-    ))
+    ), summary="Edit task retrieved.")

@@ -39,7 +39,7 @@ async def list_team_members(ctx, params: NoParams) -> ActionResult:
         )
         for r in rows if isinstance(r, dict)
     ]
-    return ActionResult.ok(TeamMemberList(items=members))
+    return ActionResult.success(TeamMemberList(items=members), summary="Team members listed.")
 
 
 @chat.function(
@@ -64,7 +64,7 @@ async def list_api_keys(ctx, params: NoParams) -> ActionResult:
         )
         for r in rows if isinstance(r, dict)
     ]
-    return ActionResult.ok(ApiKeyInfoList(items=keys))
+    return ActionResult.success(ApiKeyInfoList(items=keys), summary="Api keys listed.")
 
 
 @chat.function(
@@ -77,7 +77,7 @@ async def list_image_models(ctx, params: NoParams) -> ActionResult:
         ModelInfo(id=s.id, title=s.title, kind=s.kind, supports_image_input=s.supports_image_input, notes=", ".join(s.tags))
         for s in mr.IMAGE_MODELS.values()
     ]
-    return ActionResult.ok(ModelInfoList(items=items))
+    return ActionResult.success(ModelInfoList(items=items), summary="Image models listed.")
 
 
 @chat.function(
@@ -90,7 +90,7 @@ async def list_video_models(ctx, params: NoParams) -> ActionResult:
         ModelInfo(id=s.id, title=s.title, kind=s.kind, supports_image_input=s.supports_image_input, notes=", ".join(s.tags))
         for s in mr.VIDEO_MODELS.values()
     ]
-    return ActionResult.ok(ModelInfoList(items=items))
+    return ActionResult.success(ModelInfoList(items=items), summary="Video models listed.")
 
 
 @chat.function(
@@ -111,4 +111,4 @@ async def list_generation_results(ctx, params: ListGenerationResultsParams) -> A
         )
         for row in page.data
     ]
-    return ActionResult.ok(GenerationRecordList(items=items))
+    return ActionResult.success(GenerationRecordList(items=items), summary="Generation results listed.")

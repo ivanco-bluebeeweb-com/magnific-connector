@@ -46,7 +46,7 @@ async def generate_music(ctx, params: GenerateMusicParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the music generation request: {exc.detail}")
     await _record_history(ctx, model="music", task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(AudioTaskRef(id=task_id, title="Music generation task", kind="music", status="pending"))
+    return ActionResult.success(AudioTaskRef(id=task_id, title="Music generation task", kind="music", status="pending"), summary="Generate music done.")
 
 
 @chat.function(
@@ -64,7 +64,7 @@ async def generate_sound_effect(ctx, params: GenerateSoundEffectParams) -> Actio
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the sound effect request: {exc.detail}")
     await _record_history(ctx, model="sound_effect", task_id=task_id, prompt=params.prompt, status="pending")
-    return ActionResult.ok(AudioTaskRef(id=task_id, title="Sound effect task", kind="sound_effect", status="pending"))
+    return ActionResult.success(AudioTaskRef(id=task_id, title="Sound effect task", kind="sound_effect", status="pending"), summary="Generate sound effect done.")
 
 
 @chat.function(
@@ -82,7 +82,7 @@ async def isolate_audio(ctx, params: IsolateAudioParams) -> ActionResult:
     except mc.MagnificError as exc:
         return ActionResult.error(f"Magnific rejected the audio isolation request: {exc.detail}")
     await _record_history(ctx, model="audio_isolation", task_id=task_id, prompt="", status="pending")
-    return ActionResult.ok(AudioTaskRef(id=task_id, title="Audio isolation task", kind="audio_isolation", status="pending"))
+    return ActionResult.success(AudioTaskRef(id=task_id, title="Audio isolation task", kind="audio_isolation", status="pending"), summary="Isolate audio done.")
 
 
 @chat.function(
@@ -103,7 +103,7 @@ async def get_audio_task(ctx, params: GetAudioTaskParams) -> ActionResult:
         return ActionResult.error(f"Could not read task status: {exc.detail}")
     if result["state"] == "done":
         await _record_history(ctx, model=params.kind, task_id=params.task_id, prompt="", status="done", result_urls=result["urls"])
-    return ActionResult.ok(AudioTaskRef(
+    return ActionResult.success(AudioTaskRef(
         id=params.task_id, title=f"{params.kind} task", kind=params.kind,
         status=result["state"], result_urls=result["urls"],
-    ))
+    ), summary="Audio task retrieved.")

@@ -53,4 +53,4 @@ async def search_stock_content(ctx, params: SearchStockParams) -> ActionResult:
             author=str(row.get("author", {}).get("name", "") if isinstance(row.get("author"), dict) else row.get("author", "")),
             is_premium=bool(row.get("premium", row.get("is_premium", False))),
         ))
-    return ActionResult.ok(StockItemList(items=items))
+    return ActionResult.success(StockItemList(items=items), summary="Search stock content done.")
