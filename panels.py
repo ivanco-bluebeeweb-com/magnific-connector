@@ -7,7 +7,7 @@ left-aligned, sections separated by ui.Divider().
 
 FORM CONTAINER STRETCHED FULL WIDTH, per the standing UI rule: the connect
 form's own Stack uses align="stretch" at every nesting level, and its
-Form/Button use full_width=True -- never a narrow, centered form floating
+Form/Button use -- never a narrow, centered form floating
 in a wide sidebar.
 
 NO DUPLICATED INSTRUCTIONS BETWEEN SIDEBAR AND SETTINGS MODAL: the sidebar
@@ -40,8 +40,7 @@ def _field(label: str, node: ui.UINode) -> ui.UINode:
 
 
 def _settings_button() -> ui.UINode:
-    return ui.Button("App settings", variant="secondary", size="sm", full_width=True,
-                      on_click=ui.Call("__panel__magnific_settings"))
+    return ui.Button("App settings", variant="secondary", size="sm", on_click=ui.Call("__panel__magnific_settings"))
 
 
 def _connect_form() -> ui.UINode:
