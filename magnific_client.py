@@ -55,8 +55,11 @@ async def request(ctx, api_key: str, method: str, path: str, *, json: dict | Non
     envelope Magnific uses on every documented endpoint -- confirmed
     identical across Mystic/Flux/Seedream/analytics/stock in
     docs.magnific.com/api-reference/*."""
-    resp = await ctx.http.request(
-        method, f"{BASE_URL}{path}", headers=_headers(api_key),
+    fn = getattr(ctx.http, method.lower(), None)
+    if fn is None:
+        raise MagnificError(f"Unsupported HTTP method: {method}", "MAGNIFIC_INTERNAL_ERROR")
+    resp = await fn(
+        f"{BASE_URL}{path}", headers=_headers(api_key),
         json=json, params=params, timeout=30,
     )
     if resp.status_code == 401:
