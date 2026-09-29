@@ -44,6 +44,9 @@ async def connect_magnific(ctx, params: ConnectMagnificParams) -> ActionResult:
         return ActionResult.error(f"Could not reach Magnific to verify the key: {exc}")
 
     await ctx.secrets.set(_SECRET_NAME, key)
+    webhook_secret = (params.webhook_secret or "").strip()
+    if webhook_secret:
+        await ctx.secrets.set("magnific_webhook_secret", webhook_secret)
     return ActionResult.success(ProviderConnection(
         id="magnific", title="Magnific", connected=True,
         detail="Connected -- API key verified.",

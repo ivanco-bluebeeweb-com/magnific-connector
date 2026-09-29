@@ -59,6 +59,10 @@ def _connect_form() -> ui.UINode:
                         param_name="api_key",
                         placeholder="mgn_live_••••••••••••••••",
                     )),
+                    _field("Webhook secret (optional)", ui.Password(
+                        param_name="webhook_secret",
+                        placeholder="Webhook signing secret",
+                    )),
                 ]),
             ],
         ),

@@ -35,6 +35,9 @@ class ConnectMagnificParams(BaseModel):
         "user. Get it from magnific.com > user menu > Organization "
         "Settings > API Keys.",
     )
+    webhook_secret: str = Field(
+        "", description="Optional Magnific webhook signing secret shown alongside the API key.",
+    )
 
 
 class ProviderConnection(sdl.Entity):

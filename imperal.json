@@ -26,6 +26,12 @@
             "description": "Magnific API key to validate and save for this user. Get it from magnific.com > user menu > Organization Settings > API Keys.",
             "title": "Api Key",
             "type": "string"
+          },
+          "webhook_secret": {
+            "default": "",
+            "description": "Optional Magnific webhook signing secret shown alongside the API key.",
+            "title": "Webhook Secret",
+            "type": "string"
           }
         },
         "required": [
@@ -2997,6 +3003,14 @@
       "description": "Your Magnific API key, from magnific.com > user menu > Organization Settings > API Keys. Spent against your own credit balance on every generation call.",
       "required": false,
       "write_mode": "both",
+      "max_bytes": 4096,
+      "scope": "user"
+    },
+    {
+      "name": "magnific_webhook_secret",
+      "description": "Webhook signing secret shown alongside your Magnific API key. Stored for verifying future inbound webhook callbacks.",
+      "required": false,
+      "write_mode": "user",
       "max_bytes": 4096,
       "scope": "user"
     }
