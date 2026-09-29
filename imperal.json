@@ -3010,7 +3010,7 @@
       "name": "magnific_webhook_secret",
       "description": "Webhook signing secret shown alongside your Magnific API key. Stored for verifying future inbound webhook callbacks.",
       "required": false,
-      "write_mode": "user",
+      "write_mode": "both",
       "max_bytes": 4096,
       "scope": "user"
     }
