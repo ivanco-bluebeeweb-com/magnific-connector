@@ -71,6 +71,16 @@ ext.secret(
     write_mode="both",
 )
 
+ext.secret(
+    name="magnific_webhook_secret",
+    description=(
+        "Webhook signing secret shown alongside your Magnific API key. "
+        "Stored for verifying future inbound webhook callbacks."
+    ),
+    required=False,
+    write_mode="both",
+)
+
 
 @ext.health_check
 async def health_check(ctx) -> bool:
